@@ -39,7 +39,6 @@ public class UserController {
     //校对验证码
     @GetMapping("/verifyCode")
     public String verifyCode(String phoneNum,String code) {
-
         return userService.verify(phoneNum,code).toString();
     }
 

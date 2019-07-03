@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--<mapper namespace="com.nothing.springshop.dao.showCoffee">-->
+<!--<mapper namespace="com.nothing.springshop.mapper.showCoffee">-->
 
 <!--&lt;!&ndash;<select id="showAllCoffee" resultType="com.nothing.springshop.entity.Coffee">&ndash;&gt;-->
 <!--&lt;!&ndash;select * from coffee&ndash;&gt;-->
 <!--&lt;!&ndash;</select>&ndash;&gt;-->
 <!--</mapper>-->
-<mapper namespace="com.hellofan.backend.dao.UserDao">
+<mapper namespace="com.hellofan.backend.mapper.UserMapper">
     <resultMap id="ResultUser" type="com.hellofan.backend.model.User">
         <id column="id" property="id"/>
         <id column="phone_number" property="phoneNum"/>

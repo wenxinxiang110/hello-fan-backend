@@ -3,7 +3,7 @@ package com.hellofan.backend.service;
 
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
-import com.hellofan.backend.dao.UserDao;
+import com.hellofan.backend.mapper.UserMapper;
 import com.hellofan.backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 //    private MongoTemplate mongoTemplate;
 
     @Autowired
-    UserDao userDao;
+    UserMapper userMapper;
 
 
     /*
@@ -89,13 +89,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) {
-        userDao.insertUser(user);
+        userMapper.insertUser(user);
     }
 
     @Override
     public boolean isNameRepeat(String name) {
 
-        int temp=userDao.findUserByName(name);
+        int temp= userMapper.findUserByName(name);
         if(temp==0)
             return false;
         else
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isPhoneNumRepeat(String phoneNum) {
-        int temp=userDao.findUserByPhoneNum(phoneNum);
+        int temp= userMapper.findUserByPhoneNum(phoneNum);
         if(temp==0)
             return false;
         else
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean verifyUserInfo(String userName, String password) {
         if(userName!=null&&password!=null&&!userName.equals("")&&!password.equals("")) {
-            int result=userDao.verifyUserInfoByName(userName,password);
+            int result= userMapper.verifyUserInfoByName(userName,password);
             System.out.println("result"+result);
             if(result!=1) {
                 return false;
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updatePassword(String phoneNum, String password) {
-        userDao.updateByPhoneNum(phoneNum,password);
+        userMapper.updateByPhoneNum(phoneNum,password);
         return false;
     }
 

@@ -7,9 +7,14 @@ public class StudyPlan {
     private String tradictional;
     private Date learnTimes;
     private String value;
-    private int user;
     private double efactor;
     private Date nextDate;
+
+
+    /**
+     * 外键，用户名
+     */
+    private String userName;
 
     public int getId() {
         return id;
@@ -35,14 +40,6 @@ public class StudyPlan {
         this.value = value;
     }
 
-    public int getUser() {
-        return user;
-    }
-
-    public void setUser(int user) {
-        this.user = user;
-    }
-
     public double getEfactor() {
         return efactor;
     }
@@ -65,5 +62,13 @@ public class StudyPlan {
 
     public void setNextDate(Date nextDate) {
         this.nextDate = nextDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

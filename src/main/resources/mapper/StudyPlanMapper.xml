@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hellofan.backend.mapper.StudyPlanMapper">
+
+    <resultMap id="ResultStudyPlan" type="com.hellofan.backend.model.StudyPlan">
+        <id column="id" property="id"/>
+        <id column="traditional" property="tradictional"/>
+        <id column="learn_times" property="learnTimes"/>
+        <id column="value" property="value"/>
+        <id column="user_name" property="userName"/>
+        <id column="next_date" property="nextDate"/>
+        <id column="e_factor" property="efactor"/>
+    </resultMap>
+    <update id="updateOnePlan">
+        update study_plan
+        set learn_times=#{learnTimes} , value=#{value} , next_date=#{nextDate} ,e_factor=#{efactor}
+        where traditional=#{traditional} and user_name=#{userName}
+    </update>
+    <update id="updateAllPlan">
+    </update>
+    <delete id="deleteAllPlan">
+        delete from study_plan where user_name=#{userName}
+    </delete>
+    <select id="getAllPlan" resultType="com.hellofan.backend.model.StudyPlan">
+        select * from study_plan where user_name = #{userName}
+    </select>
+
+</mapper>

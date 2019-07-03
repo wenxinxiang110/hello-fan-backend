@@ -1,4 +1,4 @@
-package com.hellofan.backend.dao;
+package com.hellofan.backend.mapper;
 
 import com.hellofan.backend.model.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
  * 数据访问层
  */
 @Mapper
-public interface UserDao {
+public interface UserMapper {
 
      boolean insertUser(User user);
 
