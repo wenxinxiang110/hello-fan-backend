@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-@RestController("studyPlan")
+@RestController
+@RequestMapping("studyPlan")
 public class StudyPlanController {
 
     @Autowired
@@ -21,8 +23,7 @@ public class StudyPlanController {
      */
     @GetMapping("/getAllPlan")
     public List<StudyPlan> getAllPlan(String userName) {
-        List<StudyPlan> studyPlans=new ArrayList<>();
-        studyPlans=studyPlanService.getAllPlanByName(userName);
+        List<StudyPlan> studyPlans=studyPlanService.getAllPlanByName(userName);
         return studyPlans ;
     }
 
@@ -51,6 +52,7 @@ public class StudyPlanController {
     public boolean deleteAllPlan(String userName){
         return studyPlanService.deleteAllPlan(userName);
     }
+
 
 
 

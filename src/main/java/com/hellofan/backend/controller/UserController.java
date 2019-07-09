@@ -3,8 +3,12 @@ package com.hellofan.backend.controller;
 import com.hellofan.backend.dto.UserDto;
 import com.hellofan.backend.model.User;
 import com.hellofan.backend.service.UserService;
+import com.hellofan.backend.utils.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("user")
@@ -36,6 +40,12 @@ public class UserController {
 
     }
 
+    @GetMapping("/getUpdateTime")
+    public Date getUpdateTime(String userName){
+        // return studyPlanService.
+        return userService.getUpdateTime(userName);
+    }
+
     //校对验证码
     @GetMapping("/verifyCode")
     public String verifyCode(String phoneNum,String code) {
@@ -65,9 +75,21 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody User user) {
-        System.out.println("name:"+user.getUserName()+" password"+user.getPassword());
-        return userService.verifyUserInfo(user.getUserName(),user.getPassword());
+    public String login(@RequestBody User user) {
+        //user.getUserName()先判断是否11位数字，是的话当作手机号码处理；否则当作用户名
+        JSONObject jsonObject=new JSONObject();
+
+        String result=userService.verifyUserInfo(user.getUserName(),user.getPassword());
+        if(result.equals("false")) {
+            jsonObject.put("loginStatus","false");
+        }
+        else {
+            jsonObject.put("loginStatus","true");
+            jsonObject.put("userName",result);
+        }
+
+        return jsonObject.toString();
+
     }
 
     @GetMapping("/verify")
@@ -79,7 +101,6 @@ public class UserController {
             return "userNameRepeat";
         }
         return "true";
-
     }
 
     @PostMapping("/updatePassword")

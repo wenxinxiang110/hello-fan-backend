@@ -5,6 +5,7 @@ import com.hellofan.backend.model.StudyPlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,7 +21,15 @@ public class StudyPlanServiceImpl implements StudyPlanService {
 
     @Override
     public boolean updateOnePlan(StudyPlan studyPlan) {
-        studyPlanMapper.updateOnePlan(studyPlan);
+        try {
+            int affect=studyPlanMapper.updateOnePlan(studyPlan);
+            if(affect==0){
+                studyPlanMapper.insertOnePlan(studyPlan);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
@@ -29,7 +38,10 @@ public class StudyPlanServiceImpl implements StudyPlanService {
 
         try {
             for(StudyPlan studyPlan:studyPlans){
-                studyPlanMapper.updateOnePlan(studyPlan);
+                int affect=studyPlanMapper.updateOnePlan(studyPlan);
+                if(affect==0){
+                    studyPlanMapper.insertOnePlan(studyPlan);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,6 +60,8 @@ public class StudyPlanServiceImpl implements StudyPlanService {
         }
         return true;
     }
+
+
 
 
 }

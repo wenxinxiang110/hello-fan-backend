@@ -7,23 +7,33 @@
         <id column="id" property="id"/>
         <id column="traditional" property="tradictional"/>
         <id column="learn_times" property="learnTimes"/>
-        <id column="value" property="value"/>
         <id column="user_name" property="userName"/>
         <id column="next_date" property="nextDate"/>
         <id column="e_factor" property="efactor"/>
+        <id column="update_time" property="updateTime"/>
+        <id column="repeat_times" property="repeatTimes"/>
+        <id column="learn_date" property="learnDate"/>
     </resultMap>
-    <update id="updateOnePlan">
+    <insert id="insertOnePlan">
+        insert into study_plan(traditional,learn_times,user_name,next_date,e_factor,update_time,repeat_times,learn_date)
+        values(
+               #{tradictional},#{learnTimes},#{userName},#{nextDate},#{efactor},#{updateTime},#{repeatTimes},#{learnDate}
+              )
+    </insert>
+
+    <update id="updateOnePlan" >
         update study_plan
-        set learn_times=#{learnTimes} , value=#{value} , next_date=#{nextDate} ,e_factor=#{efactor}
-        where traditional=#{traditional} and user_name=#{userName}
+        set learn_times=#{learnTimes}, next_date=#{nextDate} ,e_factor=#{efactor},update_time=#{updateTime},repeat_times=#{repeatTimes},learn_date=#{learnDate}
+        where traditional=#{tradictional} and user_name=#{userName}
     </update>
     <update id="updateAllPlan">
     </update>
     <delete id="deleteAllPlan">
         delete from study_plan where user_name=#{userName}
     </delete>
-    <select id="getAllPlan" resultType="com.hellofan.backend.model.StudyPlan">
+    <select id="getAllPlan" resultMap="ResultStudyPlan">
         select * from study_plan where user_name = #{userName}
     </select>
+
 
 </mapper>

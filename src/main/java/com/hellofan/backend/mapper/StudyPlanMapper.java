@@ -4,6 +4,7 @@ import com.hellofan.backend.model.StudyPlan;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -18,7 +19,7 @@ public interface StudyPlanMapper {
     /**
      * @param studyPlan 修改一条纪录
      */
-    void updateOnePlan(StudyPlan studyPlan);
+    int updateOnePlan(StudyPlan studyPlan);
 
     /**
      * @param studyPlans 修改所有纪录
@@ -29,5 +30,7 @@ public interface StudyPlanMapper {
      * @param userName 用户名
      */
     void deleteAllPlan(@Param("userName") String userName);
+
+    void insertOnePlan(StudyPlan studyPlan);
 
 }

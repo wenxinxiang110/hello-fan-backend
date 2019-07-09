@@ -3,6 +3,8 @@ package com.hellofan.backend.service;
 
 import com.hellofan.backend.model.User;
 
+import java.util.Date;
+
 public interface UserService {
 
     /**
@@ -39,10 +41,11 @@ public interface UserService {
      */
     boolean isPhoneNumRepeat(String name);
 
-
-    boolean verifyUserInfo(String userName ,String password);
+    String verifyUserInfo(String userName ,String password);
 
     boolean updatePassword(String phoneNum, String password);
 
     void deleteRandomCode(String phonrNum);
+
+    Date getUpdateTime(String userName);
 }

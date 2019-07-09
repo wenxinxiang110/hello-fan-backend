@@ -6,15 +6,40 @@ public class StudyPlan {
     private int id;
     private String tradictional;
     private Date learnTimes;
-    private String value;
     private double efactor;
     private Date nextDate;
-
+    private Date updateTime;
+    private int repeatTimes;
+    private String learnDate;
 
     /**
      * 外键，用户名
      */
     private String userName;
+
+    public int getRepeatTimes() {
+        return repeatTimes;
+    }
+
+    public void setRepeatTimes(int repeatTimes) {
+        this.repeatTimes = repeatTimes;
+    }
+
+    public String getLearnDate() {
+        return learnDate;
+    }
+
+    public void setLearnDate(String learnDate) {
+        this.learnDate = learnDate;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public int getId() {
         return id;
@@ -30,14 +55,6 @@ public class StudyPlan {
 
     public void setTradictional(String tradictional) {
         this.tradictional = tradictional;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     public double getEfactor() {

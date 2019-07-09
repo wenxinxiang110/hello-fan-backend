@@ -1,10 +1,13 @@
 package com.hellofan.backend.model;
 
+import java.util.Date;
+
 public class User {
     private int id;
     private String phoneNum;
     private String password;
     private String userName;
+    private Date updateTime;
 
     public int getId() {
         return id;

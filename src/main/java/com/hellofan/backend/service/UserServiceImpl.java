@@ -5,13 +5,11 @@ import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
 import com.hellofan.backend.mapper.UserMapper;
 import com.hellofan.backend.model.User;
+import com.hellofan.backend.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 @Service
@@ -111,18 +109,35 @@ public class UserServiceImpl implements UserService {
             return true;
     }
 
+    /**
+     * @param userName 既可以是用户名也可以是手机号，如果是11位数字优先当作手机号处理
+     * @param password
+     * @return false检验错误 检验成功返回用户名
+     */
     @Override
-    public boolean verifyUserInfo(String userName, String password) {
-        if(userName!=null&&password!=null&&!userName.equals("")&&!password.equals("")) {
-            int result= userMapper.verifyUserInfoByName(userName,password);
-            System.out.println("result"+result);
+    public String verifyUserInfo(String userName, String password) {
+        //如果用户信息为空 肯定是验证错误
+        if(userName==null || password==null || userName.equals("") || password.equals("")) {
+            return "false";
+        } else {
+            int result=0;
+            //如果用户是手机号登陆
+            result=userMapper.verifyUserInfoByPhoneNum(userName,password);
+            if(result!=1){  //如果用手机号验证不了登陆 则用用户名验证登陆
+                result= userMapper.verifyUserInfoByName(userName,password);
+                if(result!=1){
+                    return "false";
+                }
+                else {//登陆成功
+                    return userName;
+                }
+            }
             if(result!=1) {
-                return false;
+                return "false";
             }
             else
-                return true;
+                return userMapper.findUserNameByPhone(userName);
         }
-        return false;
     }
 
     @Override
@@ -161,5 +176,10 @@ public class UserServiceImpl implements UserService {
 //        );
 //    }
 
+    @Override
+    public Date getUpdateTime(String userName) {
+        // return studyPlanMapper.
+        return userMapper.getUpdateTime(userName);
+    }
 
 }

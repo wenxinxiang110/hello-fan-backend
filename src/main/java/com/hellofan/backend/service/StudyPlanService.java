@@ -2,6 +2,7 @@ package com.hellofan.backend.service;
 
 import com.hellofan.backend.model.StudyPlan;
 
+import java.util.Date;
 import java.util.List;
 
 public interface StudyPlanService {
@@ -13,5 +14,6 @@ public interface StudyPlanService {
     boolean updateAllPlan(List<StudyPlan> studyPlans);
 
     boolean deleteAllPlan(String userName);
+
 
 }

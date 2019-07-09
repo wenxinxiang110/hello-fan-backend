@@ -13,6 +13,7 @@
         <id column="phone_number" property="phoneNum"/>
         <id column="password" property="password"/>
         <id column="user_name" property="userName"/>
+        <id column="update_time" property="updateTime"/>
     </resultMap>
     <insert id="insertUser">
         insert into user(phone_number,password,user_name)
@@ -33,5 +34,11 @@
     <select id="verifyUserInfoByPhoneNum" resultType="java.lang.Integer">
         select count(*) from user where phone_number=#{phoneNum} and password=#{oldPassword}
     </select>
+    <select id="findUserNameByPhone" resultType="java.lang.String">
+        select user_name from user where phone_number=#{phoneNum}
+    </select>
 
+    <select id="getUpdateTime" resultType="java.util.Date">
+        select update_time from user where user_name=#{userName}
+    </select>
 </mapper>
