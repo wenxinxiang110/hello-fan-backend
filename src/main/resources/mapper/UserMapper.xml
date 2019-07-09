@@ -22,6 +22,9 @@
     <update id="updateByPhoneNum">
         update user set password=#{newPassword} where phone_number=#{phoneNum}
     </update>
+    <update id="updateUserTime">
+        update user set update_time=#{date} where user_name=#{userName}
+    </update>
     <select id="findUserByName" resultType="java.lang.Integer">
         select count(*) from user where user_name=#{name}
     </select>

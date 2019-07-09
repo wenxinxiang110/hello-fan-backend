@@ -33,4 +33,10 @@ public interface StudyPlanMapper {
 
     void insertOnePlan(StudyPlan studyPlan);
 
+    /**
+     * @param userName 用户名
+     * @return 该用户的学习纪录里最新的日期
+     */
+    Date getUpdateTime(@Param("userName") String userName);
+
 }

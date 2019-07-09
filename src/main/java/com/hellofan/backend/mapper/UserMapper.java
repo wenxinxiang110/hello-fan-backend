@@ -27,4 +27,6 @@ public interface UserMapper {
      void updateByPhoneNum(@Param("phoneNum") String phoneNum, @Param("newPassword") String newPassword);
 
      Date getUpdateTime(@Param("userName") String userName);
+
+     void updateUserTime(@Param("userName") String userName, @Param("date") Date date);
 }
