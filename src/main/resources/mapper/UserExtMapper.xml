@@ -53,7 +53,7 @@
     <select id="getUpdateTime" resultType="java.util.Date">
         select update_time from user where user_name=#{userName}
     </select>
-    <select id="getSharedPreferences" resultType="com.hellofan.backend.model.generator.User">
+    <select id="getSharedPreferences" resultMap="ResultUser">
         select * from user where user_name=#{userName}
     </select>
 </mapper>

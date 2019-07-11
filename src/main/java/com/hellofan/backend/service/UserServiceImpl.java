@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
             //调用腾讯云接口发送验证码
             SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
             SmsSingleSenderResult result = ssender.send(0, "86", phoneNum,
-                    "【易骑公众号】您的验证码是：" + randomcode, "", "");
+                    "【HelloFan你好繁】您的验证码是：" + randomcode, "", "");
             System.out.println("issendsuccess" + result);
             //将验证码保存到Redis中
 //            s.opsForValue().set(phoneNum,randomcode

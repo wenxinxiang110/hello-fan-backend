@@ -117,7 +117,8 @@ public class UserController {
 
     @GetMapping("/getSharedPreferences")
     public User getSharedPreferences(String userName){
-        return userService.getSharedPreferences(userName);
+        User user=userService.getSharedPreferences(userName);
+        return user;
     }
 
     @GetMapping("/getUserInfo")
