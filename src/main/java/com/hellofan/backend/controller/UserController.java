@@ -1,6 +1,7 @@
 package com.hellofan.backend.controller;
 
 import com.hellofan.backend.dto.UserDto;
+import com.hellofan.backend.dto.UserInfo;
 import com.hellofan.backend.model.generator.User;
 import com.hellofan.backend.service.UserService;
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 @RequestMapping("user")
@@ -75,19 +77,8 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody User user) {
-        //user.getUserName()先判断是否11位数字，是的话当作手机号码处理；否则当作用户名
-        JSONObject jsonObject=new JSONObject();
-
         String result=userService.verifyUserInfo(user.getUserName(),user.getPassword());
-        if(result.equals("false")) {
-            jsonObject.put("loginStatus","false");
-        }
-        else {
-            jsonObject.put("loginStatus","true");
-            jsonObject.put("userName",result);
-        }
-
-        return jsonObject.toString();
+        return result;
 
     }
 
@@ -130,7 +121,13 @@ public class UserController {
     }
 
     @GetMapping("/getUserInfo")
-    public User getUserInfo(String userName){
+    public UserInfo getUserInfo(String userName){
         return userService.getUserInfo(userName);
+    }
+
+    @PostMapping("/saveUserInfo")
+    public String saveUserInfo(UserInfo userInfo)
+    {
+        return userService.saveUserInfo(userInfo);
     }
 }
