@@ -3,12 +3,15 @@ package com.hellofan.backend.service;
 
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
+import com.hellofan.backend.dto.UserInfo;
 import com.hellofan.backend.mapper.UserExtMapper;
 import com.hellofan.backend.mapper.generator.UserMapper;
 import com.hellofan.backend.model.generator.User;
 import com.hellofan.backend.model.generator.UserExample;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 
@@ -29,22 +32,22 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     /*
-    *调用腾讯云发送验证码到用户
-    *
+     *调用腾讯云发送验证码到用户
+     *
      */
 
     /**
      * 存放验证码的hashmap,key为手机号,value为验证码
      */
-    Map<String,String> codeMap=new HashMap<>();
+    Map<String, String> codeMap = new HashMap<>();
 
 
     @Override
-    public Boolean sendMsg(String countryCode, String phoneNum,String flag) {
-        Boolean isSend=true;
+    public Boolean sendMsg(String countryCode, String phoneNum, String flag) {
+        Boolean isSend = true;
         //随机生成的验证码
-        String randomcode=(int)((Math.random()*9+1)*1000)+"";
-        System.out.println("randomcode="+randomcode);
+        String randomcode = (int) ((Math.random() * 9 + 1) * 1000) + "";
+        System.out.println("randomcode=" + randomcode);
 
         // 短信应用SDK AppID
         int appid = 1400209835; // 1400开头
@@ -54,28 +57,27 @@ public class UserServiceImpl implements UserService {
             //调用腾讯云接口发送验证码
             SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
             SmsSingleSenderResult result = ssender.send(0, "86", phoneNum,
-                    "【易骑公众号】您的验证码是："+randomcode, "", "");
-            System.out.println("issendsuccess"+result);
+                    "【易骑公众号】您的验证码是：" + randomcode, "", "");
+            System.out.println("issendsuccess" + result);
             //将验证码保存到Redis中
 //            s.opsForValue().set(phoneNum,randomcode
 //                    ,300, TimeUnit.SECONDS
 //            );
             //验证码保存
-            codeMap.put(phoneNum,randomcode);
+            codeMap.put(phoneNum, randomcode);
             //5min后移除验证码
-            Timer timer=new Timer();
+            Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     codeMap.remove(phoneNum);
                 }
-            },300000);
+            }, 300000);
         } catch (Exception e) {
             // HTTP响应码错误
-            isSend=false;
+            isSend = false;
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             return isSend;
         }
     }
@@ -96,8 +98,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isNameRepeat(String name) {
 
-        int temp= userExtMapper.findUserByName(name);
-        if(temp==0)
+        int temp = userExtMapper.findUserByName(name);
+        if (temp == 0)
             return false;
         else
             return true;
@@ -105,8 +107,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isPhoneNumRepeat(String phoneNum) {
-        int temp= userExtMapper.findUserByPhoneNum(phoneNum);
-        if(temp==0)
+        int temp = userExtMapper.findUserByPhoneNum(phoneNum);
+        if (temp == 0)
             return false;
         else
             return true;
@@ -120,32 +122,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public String verifyUserInfo(String userName, String password) {
         //如果用户信息为空 肯定是验证错误
-        if(userName==null || password==null || userName.equals("") || password.equals("")) {
+        if (userName == null || password == null || userName.equals("") || password.equals("")) {
             return "false";
         } else {
-            int result=0;
+            int result = 0;
             //如果用户是手机号登陆
-            result= userExtMapper.verifyUserInfoByPhoneNum(userName,password);
-            if(result!=1){  //如果用手机号验证不了登陆 则用用户名验证登陆
-                result= userExtMapper.verifyUserInfoByName(userName,password);
-                if(result!=1){
+            result = userExtMapper.verifyUserInfoByPhoneNum(userName, password);
+            if (result != 1) {  //如果用手机号验证不了登陆 则用用户名验证登陆
+                result = userExtMapper.verifyUserInfoByName(userName, password);
+                if (result != 1) {
                     return "false";
-                }
-                else {//登陆成功
+                } else {//登陆成功
                     return userName;
                 }
             }
-            if(result!=1) {
+            if (result != 1) {
                 return "false";
-            }
-            else
+            } else
                 return userExtMapper.findUserNameByPhone(userName);
         }
     }
 
     @Override
     public boolean updatePassword(String phoneNum, String password) {
-        userExtMapper.updateByPhoneNum(phoneNum,password);
+        userExtMapper.updateByPhoneNum(phoneNum, password);
         return false;
     }
 
@@ -202,15 +202,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserInfo(String userName) {
-        UserExample userExample=new UserExample();
+    public UserInfo getUserInfo(String userName) {
+        UserExample userExample = new UserExample();
         userExample.createCriteria().andUserNameEqualTo(userName);
-        List<User> users=userMapper.selectByExample(userExample);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users != null && users.size() != 0) {
+            User user = users.get(0);
+            UserInfo userInfo = new UserInfo();
+            BeanUtils.copyProperties(user, userInfo);
+            return userInfo;
+        }
+        return null;
+    }
 
-        User user=users.get(0);
-        user.setPassword(null);
-        user.setPhoneNum(null);
-        return user;
+    @Override
+    public String saveUserInfo(@RequestBody UserInfo userInfo) {
+        try {
+            UserExample userExample = new UserExample();
+            String userName = userInfo.getUserName();
+            userExample.createCriteria().andUserNameEqualTo(userName);
+            User user = new User();
+            BeanUtils.copyProperties(userInfo, user);
+            userMapper.updateByExampleSelective(user, userExample);
+            return "success";
+        }
+        catch (Exception e)
+        {
+            return "fail";
+        }
     }
 
 }

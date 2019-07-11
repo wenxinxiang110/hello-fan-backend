@@ -1,6 +1,7 @@
 package com.hellofan.backend.service;
 
 
+import com.hellofan.backend.dto.UserInfo;
 import com.hellofan.backend.model.generator.User;
 
 import java.util.Date;
@@ -53,5 +54,7 @@ public interface UserService {
 
     User getSharedPreferences(String userName);
 
-    User getUserInfo(String userName);
+    UserInfo getUserInfo(String userName);
+
+    String saveUserInfo(UserInfo userInfo);
 }
