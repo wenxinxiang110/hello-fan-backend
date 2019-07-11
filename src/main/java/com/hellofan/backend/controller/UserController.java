@@ -1,9 +1,8 @@
 package com.hellofan.backend.controller;
 
 import com.hellofan.backend.dto.UserDto;
-import com.hellofan.backend.model.User;
+import com.hellofan.backend.model.generator.User;
 import com.hellofan.backend.service.UserService;
-import com.hellofan.backend.utils.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -118,5 +117,20 @@ public class UserController {
         }
         return "codeError";
 
+    }
+
+    @PostMapping("/updateSharedPreferences")
+    public boolean updateSharedPreferences(@RequestBody User user){
+        return userService.updateSharedPreferences(user);
+    }
+
+    @GetMapping("/getSharedPreferences")
+    public User getSharedPreferences(String userName){
+        return userService.getSharedPreferences(userName);
+    }
+
+    @GetMapping("/getUserInfo")
+    public User getUserInfo(String userName){
+        return userService.getUserInfo(userName);
     }
 }

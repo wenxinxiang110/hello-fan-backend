@@ -1,7 +1,7 @@
 package com.hellofan.backend.service;
 
 
-import com.hellofan.backend.model.User;
+import com.hellofan.backend.model.generator.User;
 
 import java.util.Date;
 
@@ -48,4 +48,10 @@ public interface UserService {
     void deleteRandomCode(String phonrNum);
 
     Date getUpdateTime(String userName);
+
+    boolean updateSharedPreferences(User user);
+
+    User getSharedPreferences(String userName);
+
+    User getUserInfo(String userName);
 }

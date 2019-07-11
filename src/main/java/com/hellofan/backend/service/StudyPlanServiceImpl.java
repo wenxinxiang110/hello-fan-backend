@@ -1,8 +1,8 @@
 package com.hellofan.backend.service;
 
-import com.hellofan.backend.mapper.StudyPlanMapper;
-import com.hellofan.backend.mapper.UserMapper;
-import com.hellofan.backend.model.StudyPlan;
+import com.hellofan.backend.mapper.StudyPlanExtMapper;
+import com.hellofan.backend.mapper.UserExtMapper;
+import com.hellofan.backend.model.generator.StudyPlan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,9 @@ import java.util.List;
 public class StudyPlanServiceImpl implements StudyPlanService {
 
     @Autowired
-    StudyPlanMapper studyPlanMapper;
+    StudyPlanExtMapper studyPlanMapper;
     @Autowired
-    UserMapper userMapper;
+    UserExtMapper userMapper;
 
     @Override
     public List<StudyPlan> getAllPlanByName(String userName) {

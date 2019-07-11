@@ -1,13 +1,10 @@
 package com.hellofan.backend.controller;
 
-import com.hellofan.backend.dto.StudyPlanDto;
-import com.hellofan.backend.model.StudyPlan;
+import com.hellofan.backend.model.generator.StudyPlan;
 import com.hellofan.backend.service.StudyPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -52,8 +49,6 @@ public class StudyPlanController {
     public boolean deleteAllPlan(String userName){
         return studyPlanService.deleteAllPlan(userName);
     }
-
-
 
 
 }

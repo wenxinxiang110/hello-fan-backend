@@ -1,42 +1,325 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hellofan.backend.mapper.StudyPlanMapper">
-
-    <resultMap id="ResultStudyPlan" type="com.hellofan.backend.model.StudyPlan">
-        <id column="id" property="id"/>
-        <id column="traditional" property="tradictional"/>
-        <id column="learn_times" property="learnTimes"/>
-        <id column="user_name" property="userName"/>
-        <id column="next_date" property="nextDate"/>
-        <id column="e_factor" property="efactor"/>
-        <id column="update_time" property="updateTime"/>
-        <id column="repeat_times" property="repeatTimes"/>
-        <id column="learn_date" property="learnDate"/>
-    </resultMap>
-    <insert id="insertOnePlan">
-        insert into study_plan(traditional,learn_times,user_name,next_date,e_factor,update_time,repeat_times,learn_date)
-        values(
-               #{tradictional},#{learnTimes},#{userName},#{nextDate},#{efactor},#{updateTime},#{repeatTimes},#{learnDate}
-              )
-    </insert>
-
-    <update id="updateOnePlan" >
-        update study_plan
-        set learn_times=#{learnTimes}, next_date=#{nextDate} ,e_factor=#{efactor},update_time=#{updateTime},repeat_times=#{repeatTimes},learn_date=#{learnDate}
-        where traditional=#{tradictional} and user_name=#{userName}
-    </update>
-    <update id="updateAllPlan">
-    </update>
-    <delete id="deleteAllPlan">
-        delete from study_plan where user_name=#{userName}
-    </delete>
-    <select id="getAllPlan" resultMap="ResultStudyPlan">
-        select * from study_plan where user_name = #{userName}
-    </select>
-    <select id="getUpdateTime" resultType="java.util.Date">
-        select max(update_time) from study_plan where user_name=#{userName} group by user_name
-    </select>
-
-
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hellofan.backend.mapper.generator.StudyPlanMapper">
+  <resultMap id="BaseResultMap" type="com.hellofan.backend.model.generator.StudyPlan">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="tradictional" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="learn_times" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="next_date" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="efactor" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="repeat_times" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hellofan.backend.model.generator.StudyPlan">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="tradictional" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="learn_times" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="next_date" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="efactor" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="repeat_times" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="learn_date" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, tradictional, learn_times, user_name, next_date, efactor, update_time, repeat_times
+  </sql>
+  <sql id="Blob_Column_List">
+    learn_date
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.hellofan.backend.model.generator.StudyPlanExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from study_plan
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.hellofan.backend.model.generator.StudyPlanExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from study_plan
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from study_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from study_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hellofan.backend.model.generator.StudyPlan">
+    insert into study_plan (id, tradictional, learn_times, 
+      user_name, next_date, efactor, 
+      update_time, repeat_times, learn_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{tradictional,jdbcType=VARCHAR}, #{learnTimes,jdbcType=INTEGER}, 
+      #{userName,jdbcType=VARCHAR}, #{nextDate,jdbcType=DATE}, #{efactor,jdbcType=DOUBLE}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{repeatTimes,jdbcType=INTEGER}, #{learnDate,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hellofan.backend.model.generator.StudyPlan">
+    insert into study_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tradictional != null">
+        tradictional,
+      </if>
+      <if test="learnTimes != null">
+        learn_times,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="nextDate != null">
+        next_date,
+      </if>
+      <if test="efactor != null">
+        efactor,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="repeatTimes != null">
+        repeat_times,
+      </if>
+      <if test="learnDate != null">
+        learn_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tradictional != null">
+        #{tradictional,jdbcType=VARCHAR},
+      </if>
+      <if test="learnTimes != null">
+        #{learnTimes,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDate != null">
+        #{nextDate,jdbcType=DATE},
+      </if>
+      <if test="efactor != null">
+        #{efactor,jdbcType=DOUBLE},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="repeatTimes != null">
+        #{repeatTimes,jdbcType=INTEGER},
+      </if>
+      <if test="learnDate != null">
+        #{learnDate,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update study_plan
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tradictional != null">
+        tradictional = #{record.tradictional,jdbcType=VARCHAR},
+      </if>
+      <if test="record.learnTimes != null">
+        learn_times = #{record.learnTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextDate != null">
+        next_date = #{record.nextDate,jdbcType=DATE},
+      </if>
+      <if test="record.efactor != null">
+        efactor = #{record.efactor,jdbcType=DOUBLE},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.repeatTimes != null">
+        repeat_times = #{record.repeatTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.learnDate != null">
+        learn_date = #{record.learnDate,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update study_plan
+    set id = #{record.id,jdbcType=INTEGER},
+      tradictional = #{record.tradictional,jdbcType=VARCHAR},
+      learn_times = #{record.learnTimes,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      next_date = #{record.nextDate,jdbcType=DATE},
+      efactor = #{record.efactor,jdbcType=DOUBLE},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      repeat_times = #{record.repeatTimes,jdbcType=INTEGER},
+      learn_date = #{record.learnDate,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update study_plan
+    set id = #{record.id,jdbcType=INTEGER},
+      tradictional = #{record.tradictional,jdbcType=VARCHAR},
+      learn_times = #{record.learnTimes,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      next_date = #{record.nextDate,jdbcType=DATE},
+      efactor = #{record.efactor,jdbcType=DOUBLE},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      repeat_times = #{record.repeatTimes,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hellofan.backend.model.generator.StudyPlan">
+    update study_plan
+    <set>
+      <if test="tradictional != null">
+        tradictional = #{tradictional,jdbcType=VARCHAR},
+      </if>
+      <if test="learnTimes != null">
+        learn_times = #{learnTimes,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nextDate != null">
+        next_date = #{nextDate,jdbcType=DATE},
+      </if>
+      <if test="efactor != null">
+        efactor = #{efactor,jdbcType=DOUBLE},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="repeatTimes != null">
+        repeat_times = #{repeatTimes,jdbcType=INTEGER},
+      </if>
+      <if test="learnDate != null">
+        learn_date = #{learnDate,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hellofan.backend.model.generator.StudyPlan">
+    update study_plan
+    set tradictional = #{tradictional,jdbcType=VARCHAR},
+      learn_times = #{learnTimes,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      next_date = #{nextDate,jdbcType=DATE},
+      efactor = #{efactor,jdbcType=DOUBLE},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      repeat_times = #{repeatTimes,jdbcType=INTEGER},
+      learn_date = #{learnDate,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hellofan.backend.model.generator.StudyPlan">
+    update study_plan
+    set tradictional = #{tradictional,jdbcType=VARCHAR},
+      learn_times = #{learnTimes,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      next_date = #{nextDate,jdbcType=DATE},
+      efactor = #{efactor,jdbcType=DOUBLE},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      repeat_times = #{repeatTimes,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

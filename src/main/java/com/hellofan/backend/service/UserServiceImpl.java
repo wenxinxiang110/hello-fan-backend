@@ -3,9 +3,10 @@ package com.hellofan.backend.service;
 
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
-import com.hellofan.backend.mapper.UserMapper;
-import com.hellofan.backend.model.User;
-import com.hellofan.backend.utils.StringUtils;
+import com.hellofan.backend.mapper.UserExtMapper;
+import com.hellofan.backend.mapper.generator.UserMapper;
+import com.hellofan.backend.model.generator.User;
+import com.hellofan.backend.model.generator.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,10 @@ public class UserServiceImpl implements UserService {
 //    private MongoTemplate mongoTemplate;
 
     @Autowired
-    UserMapper userMapper;
+    UserExtMapper userExtMapper;
 
+    @Autowired
+    UserMapper userMapper;
 
     /*
     *调用腾讯云发送验证码到用户
@@ -59,14 +62,14 @@ public class UserServiceImpl implements UserService {
 //            );
             //验证码保存
             codeMap.put(phoneNum,randomcode);
-            //15s后移除验证码
+            //5min后移除验证码
             Timer timer=new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     codeMap.remove(phoneNum);
                 }
-            },15000);
+            },300000);
         } catch (Exception e) {
             // HTTP响应码错误
             isSend=false;
@@ -87,13 +90,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) {
-        userMapper.insertUser(user);
+        userExtMapper.insertUser(user);
     }
 
     @Override
     public boolean isNameRepeat(String name) {
 
-        int temp= userMapper.findUserByName(name);
+        int temp= userExtMapper.findUserByName(name);
         if(temp==0)
             return false;
         else
@@ -102,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isPhoneNumRepeat(String phoneNum) {
-        int temp= userMapper.findUserByPhoneNum(phoneNum);
+        int temp= userExtMapper.findUserByPhoneNum(phoneNum);
         if(temp==0)
             return false;
         else
@@ -122,9 +125,9 @@ public class UserServiceImpl implements UserService {
         } else {
             int result=0;
             //如果用户是手机号登陆
-            result=userMapper.verifyUserInfoByPhoneNum(userName,password);
+            result= userExtMapper.verifyUserInfoByPhoneNum(userName,password);
             if(result!=1){  //如果用手机号验证不了登陆 则用用户名验证登陆
-                result= userMapper.verifyUserInfoByName(userName,password);
+                result= userExtMapper.verifyUserInfoByName(userName,password);
                 if(result!=1){
                     return "false";
                 }
@@ -136,13 +139,13 @@ public class UserServiceImpl implements UserService {
                 return "false";
             }
             else
-                return userMapper.findUserNameByPhone(userName);
+                return userExtMapper.findUserNameByPhone(userName);
         }
     }
 
     @Override
     public boolean updatePassword(String phoneNum, String password) {
-        userMapper.updateByPhoneNum(phoneNum,password);
+        userExtMapper.updateByPhoneNum(phoneNum,password);
         return false;
     }
 
@@ -179,7 +182,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public Date getUpdateTime(String userName) {
         // return studyPlanMapper.
-        return userMapper.getUpdateTime(userName);
+        return userExtMapper.getUpdateTime(userName);
+    }
+
+    @Override
+    public boolean updateSharedPreferences(User user) {
+        try {
+            userExtMapper.updateSharedPreferences(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public User getSharedPreferences(String userName) {
+        return userExtMapper.getSharedPreferences(userName);
+    }
+
+    @Override
+    public User getUserInfo(String userName) {
+        UserExample userExample=new UserExample();
+        userExample.createCriteria().andUserNameEqualTo(userName);
+        List<User> users=userMapper.selectByExample(userExample);
+
+        User user=users.get(0);
+        user.setPassword(null);
+        user.setPhoneNum(null);
+        return user;
     }
 
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<mapper namespace="com.nothing.springshop.mapper.showCoffee">-->
+
+<!--&lt;!&ndash;<select id="showAllCoffee" resultType="com.nothing.springshop.entity.Coffee">&ndash;&gt;-->
+<!--&lt;!&ndash;select * from coffee&ndash;&gt;-->
+<!--&lt;!&ndash;</select>&ndash;&gt;-->
+<!--</mapper>-->
+<mapper namespace="com.hellofan.backend.mapper.UserExtMapper">
+    <resultMap id="ResultUser" type="com.hellofan.backend.model.generator.User">
+        <id column="id" property="id"/>
+        <id column="phone_num" property="phoneNum"/>
+        <id column="password" property="password"/>
+        <id column="user_name" property="userName"/>
+        <id column="update_time" property="updateTime"/>
+        <id column="last_learn_date" property="lastLearnDate"/>
+        <id column="current_word" property="currentWord"/>
+        <id column="today_words" property="todayWords"/>
+        <id column="words_perday" property="wordsPerday"/>
+    </resultMap>
+    <insert id="insertUser">
+        insert into user(phone_num,password,user_name)
+        values (#{phoneNum},#{password},#{userName})
+    </insert>
+    <update id="updateByPhoneNum">
+        update user set password=#{newPassword} where phone_num=#{phoneNum}
+    </update>
+    <update id="updateUserTime">
+        update user set update_time=#{date} where user_name=#{userName}
+    </update>
+    <update id="updateSharedPreferences">
+        update user
+        set last_learn_date=#{lastLearnDate},current_word=#{currentWord},today_words=#{todayWords},words_perday=#{wordsPerday}
+        where user_name=#{userName}
+    </update>
+    <select id="findUserByName" resultType="java.lang.Integer">
+        select count(*) from user where user_name=#{name}
+    </select>
+    <select id="findUserByPhoneNum" resultType="java.lang.Integer">
+        select count(*) from user where phone_num=#{phoneNum}
+    </select>
+    <select id="verifyUserInfoByName" resultType="java.lang.Integer">
+        select count(*) from user where user_name=#{userName} and password=#{password}
+    </select>
+    <select id="verifyUserInfoByPhoneNum" resultType="java.lang.Integer">
+        select count(*) from user where phone_num=#{phoneNum} and password=#{oldPassword}
+    </select>
+    <select id="findUserNameByPhone" resultType="java.lang.String">
+        select user_name from user where phone_num=#{phoneNum}
+    </select>
+
+    <select id="getUpdateTime" resultType="java.util.Date">
+        select update_time from user where user_name=#{userName}
+    </select>
+    <select id="getSharedPreferences" resultType="com.hellofan.backend.model.generator.User">
+        select * from user where user_name=#{userName}
+    </select>
+</mapper>

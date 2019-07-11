@@ -1,6 +1,6 @@
 package com.hellofan.backend.dto;
 
-import com.hellofan.backend.model.User;
+import com.hellofan.backend.model.generator.User;
 
 public class UserDto {
 

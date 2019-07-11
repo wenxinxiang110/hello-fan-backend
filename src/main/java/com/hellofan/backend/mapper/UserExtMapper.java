@@ -1,6 +1,6 @@
 package com.hellofan.backend.mapper;
 
-import com.hellofan.backend.model.User;
+import com.hellofan.backend.model.generator.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  * 数据访问层
  */
 @Mapper
-public interface UserMapper {
+public interface UserExtMapper {
 
      boolean insertUser(User user);
 
@@ -29,4 +29,8 @@ public interface UserMapper {
      Date getUpdateTime(@Param("userName") String userName);
 
      void updateUserTime(@Param("userName") String userName, @Param("date") Date date);
+
+     void updateSharedPreferences(User user);
+
+     User getSharedPreferences(@Param("userName") String userName);
 }

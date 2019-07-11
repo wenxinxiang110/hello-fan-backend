@@ -1,6 +1,6 @@
 package com.hellofan.backend.mapper;
 
-import com.hellofan.backend.model.StudyPlan;
+import com.hellofan.backend.model.generator.StudyPlan;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Mapper
-public interface StudyPlanMapper {
+public interface StudyPlanExtMapper {
 
     /**
      * @param userName 用户名

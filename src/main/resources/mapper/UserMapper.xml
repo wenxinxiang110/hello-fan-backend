@@ -1,47 +1,435 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--<mapper namespace="com.nothing.springshop.mapper.showCoffee">-->
-
-<!--&lt;!&ndash;<select id="showAllCoffee" resultType="com.nothing.springshop.entity.Coffee">&ndash;&gt;-->
-<!--&lt;!&ndash;select * from coffee&ndash;&gt;-->
-<!--&lt;!&ndash;</select>&ndash;&gt;-->
-<!--</mapper>-->
-<mapper namespace="com.hellofan.backend.mapper.UserMapper">
-    <resultMap id="ResultUser" type="com.hellofan.backend.model.User">
-        <id column="id" property="id"/>
-        <id column="phone_number" property="phoneNum"/>
-        <id column="password" property="password"/>
-        <id column="user_name" property="userName"/>
-        <id column="update_time" property="updateTime"/>
-    </resultMap>
-    <insert id="insertUser">
-        insert into user(phone_number,password,user_name)
-        values (#{phoneNum},#{password},#{userName})
-    </insert>
-    <update id="updateByPhoneNum">
-        update user set password=#{newPassword} where phone_number=#{phoneNum}
-    </update>
-    <update id="updateUserTime">
-        update user set update_time=#{date} where user_name=#{userName}
-    </update>
-    <select id="findUserByName" resultType="java.lang.Integer">
-        select count(*) from user where user_name=#{name}
-    </select>
-    <select id="findUserByPhoneNum" resultType="java.lang.Integer">
-        select count(*) from user where phone_number=#{phoneNum}
-    </select>
-    <select id="verifyUserInfoByName" resultType="java.lang.Integer">
-        select count(*) from user where user_name=#{userName} and password=#{password}
-    </select>
-    <select id="verifyUserInfoByPhoneNum" resultType="java.lang.Integer">
-        select count(*) from user where phone_number=#{phoneNum} and password=#{oldPassword}
-    </select>
-    <select id="findUserNameByPhone" resultType="java.lang.String">
-        select user_name from user where phone_number=#{phoneNum}
-    </select>
-
-    <select id="getUpdateTime" resultType="java.util.Date">
-        select update_time from user where user_name=#{userName}
-    </select>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hellofan.backend.mapper.generator.UserMapper">
+  <resultMap id="BaseResultMap" type="com.hellofan.backend.model.generator.User">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="phone_num" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="current_word" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="words_perday" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="nick_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sex" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="school" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="avatar_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="study_days" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="brief" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hellofan.backend.model.generator.User">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="phone_num" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="current_word" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="words_perday" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="nick_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sex" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="school" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="avatar_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="study_days" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="brief" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="last_learn_date" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+      <arg column="today_words" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, phone_num, password, user_name, update_time, current_word, words_perday, nick_name, 
+    sex, school, avatar_url, study_days, brief
+  </sql>
+  <sql id="Blob_Column_List">
+    last_learn_date, today_words
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.hellofan.backend.model.generator.UserExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.hellofan.backend.model.generator.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hellofan.backend.model.generator.User">
+    insert into user (id, phone_num, password, 
+      user_name, update_time, current_word, 
+      words_perday, nick_name, sex, 
+      school, avatar_url, study_days, 
+      brief, last_learn_date, today_words
+      )
+    values (#{id,jdbcType=INTEGER}, #{phoneNum,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{currentWord,jdbcType=INTEGER}, 
+      #{wordsPerday,jdbcType=INTEGER}, #{nickName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{school,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{studyDays,jdbcType=VARCHAR}, 
+      #{brief,jdbcType=VARCHAR}, #{lastLearnDate,jdbcType=LONGVARCHAR}, #{todayWords,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hellofan.backend.model.generator.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="phoneNum != null">
+        phone_num,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="currentWord != null">
+        current_word,
+      </if>
+      <if test="wordsPerday != null">
+        words_perday,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="avatarUrl != null">
+        avatar_url,
+      </if>
+      <if test="studyDays != null">
+        study_days,
+      </if>
+      <if test="brief != null">
+        brief,
+      </if>
+      <if test="lastLearnDate != null">
+        last_learn_date,
+      </if>
+      <if test="todayWords != null">
+        today_words,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="phoneNum != null">
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentWord != null">
+        #{currentWord,jdbcType=INTEGER},
+      </if>
+      <if test="wordsPerday != null">
+        #{wordsPerday,jdbcType=INTEGER},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null">
+        #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="studyDays != null">
+        #{studyDays,jdbcType=VARCHAR},
+      </if>
+      <if test="brief != null">
+        #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLearnDate != null">
+        #{lastLearnDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="todayWords != null">
+        #{todayWords,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.phoneNum != null">
+        phone_num = #{record.phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.currentWord != null">
+        current_word = #{record.currentWord,jdbcType=INTEGER},
+      </if>
+      <if test="record.wordsPerday != null">
+        words_perday = #{record.wordsPerday,jdbcType=INTEGER},
+      </if>
+      <if test="record.nickName != null">
+        nick_name = #{record.nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.school != null">
+        school = #{record.school,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatarUrl != null">
+        avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studyDays != null">
+        study_days = #{record.studyDays,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brief != null">
+        brief = #{record.brief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastLearnDate != null">
+        last_learn_date = #{record.lastLearnDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.todayWords != null">
+        today_words = #{record.todayWords,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update user
+    set id = #{record.id,jdbcType=INTEGER},
+      phone_num = #{record.phoneNum,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      current_word = #{record.currentWord,jdbcType=INTEGER},
+      words_perday = #{record.wordsPerday,jdbcType=INTEGER},
+      nick_name = #{record.nickName,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      school = #{record.school,jdbcType=VARCHAR},
+      avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+      study_days = #{record.studyDays,jdbcType=VARCHAR},
+      brief = #{record.brief,jdbcType=VARCHAR},
+      last_learn_date = #{record.lastLearnDate,jdbcType=LONGVARCHAR},
+      today_words = #{record.todayWords,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user
+    set id = #{record.id,jdbcType=INTEGER},
+      phone_num = #{record.phoneNum,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      current_word = #{record.currentWord,jdbcType=INTEGER},
+      words_perday = #{record.wordsPerday,jdbcType=INTEGER},
+      nick_name = #{record.nickName,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      school = #{record.school,jdbcType=VARCHAR},
+      avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+      study_days = #{record.studyDays,jdbcType=VARCHAR},
+      brief = #{record.brief,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hellofan.backend.model.generator.User">
+    update user
+    <set>
+      <if test="phoneNum != null">
+        phone_num = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentWord != null">
+        current_word = #{currentWord,jdbcType=INTEGER},
+      </if>
+      <if test="wordsPerday != null">
+        words_perday = #{wordsPerday,jdbcType=INTEGER},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null">
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="studyDays != null">
+        study_days = #{studyDays,jdbcType=VARCHAR},
+      </if>
+      <if test="brief != null">
+        brief = #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLearnDate != null">
+        last_learn_date = #{lastLearnDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="todayWords != null">
+        today_words = #{todayWords,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hellofan.backend.model.generator.User">
+    update user
+    set phone_num = #{phoneNum,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      current_word = #{currentWord,jdbcType=INTEGER},
+      words_perday = #{wordsPerday,jdbcType=INTEGER},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      study_days = #{studyDays,jdbcType=VARCHAR},
+      brief = #{brief,jdbcType=VARCHAR},
+      last_learn_date = #{lastLearnDate,jdbcType=LONGVARCHAR},
+      today_words = #{todayWords,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hellofan.backend.model.generator.User">
+    update user
+    set phone_num = #{phoneNum,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      current_word = #{currentWord,jdbcType=INTEGER},
+      words_perday = #{wordsPerday,jdbcType=INTEGER},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      study_days = #{studyDays,jdbcType=VARCHAR},
+      brief = #{brief,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

@@ -1,8 +1,7 @@
 package com.hellofan.backend.service;
 
-import com.hellofan.backend.model.StudyPlan;
+import com.hellofan.backend.model.generator.StudyPlan;
 
-import java.util.Date;
 import java.util.List;
 
 public interface StudyPlanService {
