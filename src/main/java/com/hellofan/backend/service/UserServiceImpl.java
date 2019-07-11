@@ -216,7 +216,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String saveUserInfo(@RequestBody UserInfo userInfo) {
+    public String saveUserInfo(UserInfo userInfo) {
         try {
             UserExample userExample = new UserExample();
             String userName = userInfo.getUserName();
@@ -228,6 +228,7 @@ public class UserServiceImpl implements UserService {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return "fail";
         }
     }

@@ -127,7 +127,7 @@ public class UserController {
     }
 
     @PostMapping("/saveUserInfo")
-    public String saveUserInfo(UserInfo userInfo)
+    public String saveUserInfo(@RequestBody UserInfo userInfo)
     {
         return userService.saveUserInfo(userInfo);
     }
